@@ -1,11 +1,12 @@
 package gsft.utils;
 
-import java.io.IOException;
-import java.io.PrintStream;
-
 import gsft.model.Disk;
 import gsft.model.Snapshot;
 import gsft.model.VirtualMachine;
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
 
 public class CSVWriter {
 
@@ -21,6 +22,14 @@ public class CSVWriter {
 			PrintStream pw = new PrintStream(filename); 
 			writeToOutput(vm, pw);
 			pw.close();
+
+			// new
+			//add -migrate before .csv extension in the filename
+			String migrateFileName=filename.substring(0,filename.length()-4);
+			migrateFileName+="-migrate.csv";
+			PrintStream pw2 = new PrintStream(migrateFileName); 
+			writeToOutput2(vm, pw2);
+			pw2.close();
 	
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -33,7 +42,7 @@ public class CSVWriter {
 	}
 
 	private static void writeToOutput(VirtualMachine vm, PrintStream pw) throws IOException {
-		pw.println("VM name, Disk, Snapshot, uuid, filename, timestamp");
+		pw.println("VM name, timestamp, Snapshot, Disk, Memory State");
 		
 		// shows all the snapshots
 		for(Snapshot snapshot: vm.getSnapshots()) {
@@ -56,10 +65,21 @@ public class CSVWriter {
 						);
 			}
 		}
-
-		
-		
 	}
+
+	private static void writeToOutput2(VirtualMachine vm, PrintStream pw) throws IOException {
+		//pw.println("List of files to migrate the VM\n");
+		
+		ArrayList<Snapshot> s = vm.getSnapshots();
+		
+		pw.println(vm.getName() + ".vbox");
+		
+		for (int i=0; i<s.size(); i++) {
+			pw.println(s.get(i).getDisk().getLocation());
+		}
+		pw.println(s.get(s.size()-1).getStateFile());
+	}
+
 	
 	/**
 	 * Method that creates and edits the CSV file with the results
