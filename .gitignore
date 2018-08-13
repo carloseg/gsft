@@ -4,3 +4,8 @@
 # Maven
 log/
 target/
+
+# Files produced during tests
+/src/test/resources/example/output.csv
+/src/test/resources/example/output-migrate.csv
+/src/test/resources/example/results.csv
