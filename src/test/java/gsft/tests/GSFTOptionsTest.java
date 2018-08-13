@@ -8,10 +8,7 @@ import com.beust.jcommander.JCommander;
 import gsft.GSFTOptions;
 
 /**
- * Class that represents the command line options for the execution of the GSFT command.
- * 
- * It uses the JCommander library to obtain the values from the command line and to 
- * output help information to the users.
+ * Tests for the management of command line options
  *
  */
 public class GSFTOptionsTest {
@@ -28,7 +25,9 @@ public class GSFTOptionsTest {
 			.build();
 		
 		assertTrue(opts.filename == null);
-		assertTrue(opts.csvFileName == null);		
+		assertTrue(opts.outputFileName == null);
+		assertTrue(opts.snapshotName == null);
+		assertTrue(opts.migrate == false);
 	}
 	
 	@Test
@@ -43,13 +42,13 @@ public class GSFTOptionsTest {
 			.build();
 		
 		assertTrue(opts.filename != null);
-		assertTrue(opts.csvFileName == null);		
+		assertTrue(opts.outputFileName == null);		
 	}
 	
 	@Test
 	public void testWithBothFileNames() {
 		
-		String args[]  = { "-csv", "example.csv", "example.vbox" };
+		String args[]  = { "-file", "example.csv", "example.vbox" };
 	
 		GSFTOptions opts = new GSFTOptions();				
 		JCommander.newBuilder()
@@ -60,8 +59,32 @@ public class GSFTOptionsTest {
 		assertTrue(opts.filename != null);
 		assertTrue(opts.filename.equals("example.vbox"));
 		
-		assertTrue(opts.csvFileName != null);		
-		assertTrue(opts.csvFileName.equals("example.csv"));
+		assertTrue(opts.outputFileName != null);		
+		assertTrue(opts.outputFileName.equals("example.csv"));
 	}
+	
+	@Test
+	public void testWithSnapshotNames() {
+		
+		String args[]  = { "-migrate", "-snapshot", "snapshot1", "-file", "example.csv", "example.vbox" };
+	
+		GSFTOptions opts = new GSFTOptions();				
+		JCommander.newBuilder()
+			.addObject(opts)
+			.args(args)
+			.build();
+
+		assertTrue(opts.migrate == true);
+
+		assertTrue(opts.snapshotName != null);
+		assertTrue(opts.snapshotName.equals("snapshot1"));
+		
+		assertTrue(opts.filename != null);
+		assertTrue(opts.filename.equals("example.vbox"));
+		
+		assertTrue(opts.outputFileName != null);		
+		assertTrue(opts.outputFileName.equals("example.csv"));
+	}
+	
 	
 }

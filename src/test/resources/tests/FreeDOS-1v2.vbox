@@ -68,7 +68,7 @@
         </StorageController>
       </StorageControllers>
       <Snapshots>
-        <Snapshot uuid="{55718051-d4ae-4d09-b79b-ceabcf040a5f}" name="Instant&#xE1;nea 1" timeStamp="2018-06-12T20:19:28Z" stateFile="Snapshots/2018-06-12T20-19-28-354471700Z.sav">
+        <Snapshot uuid="{55718051-d4ae-4d09-b79b-ceabcf040a5f}" name="Snapshot 1a" timeStamp="2018-06-12T20:19:28Z" stateFile="Snapshots/2018-06-12T20-19-28-354471700Z.sav">
           <Hardware>
             <CPU>
               <PAE enabled="false"/>

@@ -60,12 +60,12 @@ public class GSFT {
 		if (! opts.migrate) {
 			
 			try {
-				ListAllWriter.write(vm, opts.csvFileName);
+				ListAllWriter.write(vm, opts.outputFileName);
 			} catch (Exception e) {
 				
 				// if the CSV filename was provided
-				if (opts.csvFileName != null) {
-					System.err.println("Error creating " + opts.csvFileName + " .csv file: " + e.getMessage());
+				if (opts.outputFileName != null) {
+					System.err.println("Error creating " + opts.outputFileName + " .csv file: " + e.getMessage());
 				} else {
 					System.err.println("Error producing output to console : " + e.getMessage());
 				}
@@ -77,12 +77,12 @@ public class GSFT {
 		} else {
 			
 			try {
-				ListMigrateFilesWriter.write(vm, opts.snapshotName, opts.csvFileName);
+				ListMigrateFilesWriter.write(vm, opts.snapshotName, opts.outputFileName);
 			} catch (Exception e) {
 				
 				// if the CSV filename was provided
-				if (opts.csvFileName != null) {
-					System.err.println("Error creating " + opts.csvFileName + " .csv file: " + e.getMessage());
+				if (opts.outputFileName != null) {
+					System.err.println("Error creating " + opts.outputFileName + " .csv file: " + e.getMessage());
 				} else {
 					System.err.println("Error producing output to console : " + e.getMessage());
 				}	
