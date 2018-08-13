@@ -12,8 +12,22 @@ import org.xml.sax.SAXException;
 
 import gsft.model.VirtualMachine;
 
+/**
+ * Class that build an object structure that represents the data of a virtual machine.
+ * 
+ */
 public class VirtualMachineBuilder {
 
+	/**
+	 * Returns a object structure, with a root Virtual Machine instance, that represents 
+	 * the disks, images and snapshots of a VirtualBox virtual machine.
+	 * @param filename		name of the .vbox file to process
+	 * @return				Virtual machine object structure that represents the information 
+	 * 						in the .vbox file
+	 * @throws ParserConfigurationException	Error processing the XML file
+	 * @throws SAXException					Error processing the elements (tags) in the XML file
+	 * @throws IOException					Error opening or reading the XML file
+	 */
 	public static VirtualMachine process(String filename) throws ParserConfigurationException, SAXException, IOException {
 		
 		// creates a file from the filename
@@ -27,7 +41,17 @@ public class VirtualMachineBuilder {
 		return process(file);
 		
 	}
-	
+
+	/**
+	 * Returns a object structure, with a root Virtual Machine instance, that represents 
+	 * the disks, images and snapshots of a VirtualBox virtual machine.
+	 * @param file	.vbox File to process 
+	 * @return				Virtual machine object structure that represents the information 
+	 * 						in the .vbox file
+	 * @throws ParserConfigurationException	Error processing the XML file
+	 * @throws SAXException					Error processing the elements (tags) in the XML file
+	 * @throws IOException					Error opening or reading the XML file
+	 */
 	public static VirtualMachine process(File file) throws ParserConfigurationException, SAXException, IOException {
 	
 		// create a SAX parser for the file

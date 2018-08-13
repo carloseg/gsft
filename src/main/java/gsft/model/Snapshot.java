@@ -1,15 +1,11 @@
 package gsft.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * This class represents a snapshot
- * taken  from the virtual machine at some time.
+ * Class that represents a snapshot taken from the virtual machine at some time.
  * 
- * The snapshot has a name, a timeStamp, an UUID and a pair.
- * 
- * @author Carlos Eduardo Gomez Montoya
- * @author David Camilo Bonilla Verdugo
- * @author Harold Enrique Castro Barrera
- *
  */
 public class Snapshot {
 
@@ -31,17 +27,22 @@ public class Snapshot {
 	private String stateFile;
 
 	/**
-	 * Attribute that points to the disk used to store the snapshot
+	 * Attribute that points to the disk image used to store the snapshot
 	 */
-	Disk disk;
+	List<Image> images = new ArrayList<Image>();
+	
+	/**
+	 * Disk which is the base of the snapshot
+	 */
 	Disk baseDisk;
 	
 	/**
 	 * Constructor of the class Snapshot.
 	 * 
-	 * @param pUuid, pUuid != null, pUuid != ""
-	 * @param pName, pName != null, pName != ""
-	 * @param pTimeStamp, pTimeStamp != null, pTimeStamp != ""
+	 * @param pUuid			Unique id of the snapshot. pUuid != null, pUuid != ""
+	 * @param pName 		Name of the snapshot. pName != null, pName != ""
+	 * @param pTimeStamp 	Timestamp of the snapshot. pTimeStamp != null, pTimeStamp != ""
+	 * @param stateFile		filename with the state of the snapshot.
 	 */
 	public Snapshot(String pUuid, String pName, String pTimeStamp, String stateFile) {
 		name = pName;
@@ -106,20 +107,16 @@ public class Snapshot {
 		this.uuid = uuid;
 	}
 
-	public Disk getDisk() {
-		return disk;
+	public void addImage(Image image) {
+		images.add(image);
 	}
 	
-	public void setDisk(Disk disk) {
-		this.disk = disk;
+	public List<Image> getImages() {
+		return images;
 	}
 	
-	public Disk getBaseDisk() {
-		return baseDisk;
-	}
-	
-	public void setBaseDisk(Disk baseDisk) {
-		this.baseDisk = baseDisk;
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 	
 	/**
@@ -131,8 +128,7 @@ public class Snapshot {
 				+ ",\n\t\t name: " + name
 				+ ",\n\t\t timestamp: \"" + timeStamp + "\""
 				+ ",\n\t\t stateFile: \"" + stateFile + "\""
-				+ ",\n\t\t disk.uuid: \"" + disk.getUuid() + "\""
-				+ ",\n\t\t baseDisk.uuid: \"" + baseDisk.getUuid() + "\""
+				+ ",\n\t\t images: " + images
 				+ "\n\t\t}";
 	}
 	

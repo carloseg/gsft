@@ -7,6 +7,13 @@ import com.beust.jcommander.JCommander;
 
 import gsft.GSFTOptions;
 
+/**
+ * Class that represents the command line options for the execution of the GSFT command.
+ * 
+ * It uses the JCommander library to obtain the values from the command line and to 
+ * output help information to the users.
+ *
+ */
 public class GSFTOptionsTest {
 
 	@Test
