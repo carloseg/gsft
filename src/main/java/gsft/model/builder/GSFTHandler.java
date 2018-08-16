@@ -1,5 +1,7 @@
 package gsft.model.builder;
 
+import java.util.Stack;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -26,6 +28,8 @@ public class GSFTHandler extends DefaultHandler {
 	 * Virtual machine instance used during processing of the XML
 	 */
 	private VirtualMachine 	vm 				= null;
+	
+	private Stack<Image> 	imageStack		= new Stack<Image>();
 	
 	/**
 	 * Disk instance used during processing of the XML
@@ -103,7 +107,7 @@ public class GSFTHandler extends DefaultHandler {
 					attributes.getValue("format"),
 					(attributes.getValue("type") == null)
 					);
-
+			
 			// Is is not an snapshot ? 
 			if (! image.isSnapshot()) {
 				
@@ -117,12 +121,23 @@ public class GSFTHandler extends DefaultHandler {
 				// add to the virtual machine
 				vm.addDisk(disk);
 				currentDisk = disk;
+				
 			}
+
+//			Image lastImage = imageStack.size() == 0 ? null:  imageStack.peek();
+//			System.out.println(image.getLocation()
+//					+ " parent-> "
+//					+ (lastImage == null ? "null" : lastImage.getLocation()));
 			
 			// set the disk for the image
 			image.setDisk(currentDisk);
+			// set the parent image
+			image.setParent(imageStack.size() == 0 ? null:  imageStack.peek());
 			// add the image to the virtual machine
 			vm.addImage(image);
+		
+			// store last processed image
+			imageStack.push(image);
 			
 		}
 		
@@ -170,6 +185,9 @@ public class GSFTHandler extends DefaultHandler {
 					vm.setLastSnapShot(currentSnapshot);
 			}
 			currentSnapshot = null;
+			
+		} else if (qName.equalsIgnoreCase("HardDisk")) {
+			imageStack.pop();
 		}
 	}
 	

@@ -50,33 +50,61 @@ public class ListMigrateFilesWriter {
 	 * @throws IOException Error if the class cannot write the output
 	 */
 	private static void writeToOutput(VirtualMachine vm, PrintStream pw, String snapshotname) throws IOException {
-
-		Snapshot selectedSnapshot = vm.getLastSnapShot(); 
 		
 		// print virtual machine file
 		pw.println(vm.getName() + ".vbox");
 		
-		// for all the snapshots
-		for(Snapshot snapshot: vm.getSnapshots()) {
-			
-			// ignore the "{current}" snapshot
-			if (snapshot != vm.getLastSnapShot()) {		
-				// for all the images (disks) 
-				for(Image image : snapshot.getImages()) {
-					pw.println(image.getLocation());					
-				}
+		Snapshot lastSnapshot = null;
+		
+		// no snapshot name ?
+		if (snapshotname == null) {
+		
+			// for all the snapshots
+			for(Snapshot snapshot: vm.getSnapshots()) {
 				
-				// is the selected snapshot ?
-				if (snapshotname != null && snapshot.getName().equals(snapshotname)) {
+				// ignore the "{current}" snapshot
+				if (snapshot != vm.getLastSnapShot()) {		
+					// for all the images (disks) 
+					for(Image image : snapshot.getImages()) {
+						pw.println(image.getLocation());					
+					}
+					lastSnapshot = snapshot;
+				}
+
+			}
+
+			// show the .sav file for the last snapshot
+			pw.println(lastSnapshot.getStateFile());
+			
+			
+		// is there a snapshot name ?
+		} else {
+			
+			// determine the selected snapshot 
+			Snapshot selectedSnapshot = null;
+			for(Snapshot snapshot: vm.getSnapshots()) {
+				if (snapshot.getName().equals(snapshotname)) {
 					selectedSnapshot  = snapshot;
 					break;
 				}
 			}
-
+			
+			// snapshot found ?
+			if (selectedSnapshot != null) {
+				// for each image
+				for (Image image : selectedSnapshot.getImages()) {
+					Image imageToDisplay = image;
+					// display the image and all its parent images				
+					do {
+						pw.println(imageToDisplay.getLocation());
+						imageToDisplay = imageToDisplay.getParent();
+					} while (imageToDisplay != null);
+					
+				}
+			}
+			
+			pw.println(selectedSnapshot.getStateFile());
 		}
-
-		// show the .sav file for the last snapshot
-		pw.println(selectedSnapshot.getStateFile());
 		
 	}
 	
