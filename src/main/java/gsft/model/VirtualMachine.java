@@ -14,6 +14,7 @@ public class VirtualMachine {
 	 */
 	public String uuid;
 	public String name;
+	public String filename;
 	public String OS;
 	public String lastStateChange;
 
@@ -192,6 +193,22 @@ public class VirtualMachine {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	/**
+	 * gets the name of the .vbox file
+	 * @return name of the .vbox file
+	 */
+	public String getFilename() {
+		return filename;
+	}
+	
+	/**
+	 * sets the name of the .vbox file
+	 * @param filename	name of the .vbox file
+	 */
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 
 	/**

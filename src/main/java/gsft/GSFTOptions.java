@@ -14,8 +14,14 @@ public class GSFTOptions {
 	/**
 	 * True if the user wants the list of files required to migrate a virtual machine
 	 */
-	@Parameter(names = {"-migrate"}, description = "Show only the files required to migrate")
+	@Parameter(names = {"-migrate", "-m"}, description = "Show only the files required to migrate")
 	public boolean migrate; 
+	
+	/**
+	 * True if the user wants a list of files of the VM including the type and the file size
+	 */
+	@Parameter(names = {"-all", "-a"}, description = "Show all the files including type and file size")
+	public boolean all;
 	
 	/**
 	 * Name of the snapshot to process

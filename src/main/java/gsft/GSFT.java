@@ -5,6 +5,7 @@ import com.beust.jcommander.JCommander;
 import gsft.model.VirtualMachine;
 import gsft.model.builder.VirtualMachineBuilder;
 import gsft.utils.ListAllWriter;
+import gsft.utils.ListFilesWithTypeWriter;
 import gsft.utils.ListMigrateFilesWriter;
 
 /**
@@ -56,8 +57,42 @@ public class GSFT {
 
 		// 3. Produce the output
 		
-		// Must the program list all the files ?
-		if (! opts.migrate) {
+		// Must the program list only the files to migrate ?
+		if (opts.migrate) {
+			
+			try {
+				ListMigrateFilesWriter.write(vm, opts.snapshotName, opts.outputFileName);
+			} catch (Exception e) {
+				
+				// if the CSV filename was provided
+				if (opts.outputFileName != null) {
+					System.err.println("Error creating " + opts.outputFileName + " .csv file: " + e.getMessage());
+				} else {
+					System.err.println("Error producing output to console : " + e.getMessage());
+				}	
+				e.printStackTrace();
+				System.exit(1);
+			}							
+
+		// Must the program list the files to migrate showing file type and size ?
+		} else if (opts.all) {
+			
+			try {
+				ListFilesWithTypeWriter.write(vm, opts.snapshotName, opts.outputFileName);
+			} catch (Exception e) {
+				
+				// if the CSV filename was provided
+				if (opts.outputFileName != null) {
+					System.err.println("Error creating " + opts.outputFileName + " .csv file: " + e.getMessage());
+				} else {
+					System.err.println("Error producing output to console : " + e.getMessage());
+				}	
+				e.printStackTrace();
+				System.exit(1);
+			}							
+
+		// Must the program list all the files ?	
+		} else {
 			
 			try {
 				ListAllWriter.write(vm, opts.outputFileName);
@@ -73,22 +108,6 @@ public class GSFT {
 				System.exit(1);
 			}
 							
-		// Must the program list only the files to migrate ?
-		} else {
-			
-			try {
-				ListMigrateFilesWriter.write(vm, opts.snapshotName, opts.outputFileName);
-			} catch (Exception e) {
-				
-				// if the CSV filename was provided
-				if (opts.outputFileName != null) {
-					System.err.println("Error creating " + opts.outputFileName + " .csv file: " + e.getMessage());
-				} else {
-					System.err.println("Error producing output to console : " + e.getMessage());
-				}	
-				e.printStackTrace();
-				System.exit(1);
-			}							
 		}
 		
 		
