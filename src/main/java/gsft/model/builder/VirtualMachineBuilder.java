@@ -62,6 +62,7 @@ public class VirtualMachineBuilder {
 		// process the file
 		saxParser.parse(file, gtfsHandler);
 		
+		// sets the filename of the root VM object
 		gtfsHandler.getVM().setFilename(file.getCanonicalPath());
 		
 		// obtain the resulting model

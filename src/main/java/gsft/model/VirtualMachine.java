@@ -22,6 +22,9 @@ public class VirtualMachine {
 	
 	HashMap<String, Image> images = new HashMap<String, Image>();
 	
+	HashMap<String, Image> dvds = new HashMap<String, Image>();
+	
+	
 	Snapshot	lastSnapShot;
 	
 	/**
@@ -55,29 +58,6 @@ public class VirtualMachine {
 	// ==========
 	
 	/**
-	 * Allows to add a snapshot to the virtual machine
-	 * @param snap	Snapshot to add to the virtual machine
-	 */
-	public void addSnapshot(Snapshot snap){
-		snapshots.add(snap);		
-	}
-
-	/**
-	 * Allows to delete a snapshot.
-	 * @param snap	Snapshot to delete in the virtual machine
-	 */
-	public void deleteSnapshot(Snapshot snap){
-		for (int i = 0; i<snapshots.size();i++)
-		{
-			if(snapshots.get(i)!=null){
-				if(snapshots.get(i) == snap){
-					snapshots.remove(i);
-				}
-			}
-		}
-	}
-	
-	/**
 	 * Returns the UUID of the VM
 	 * @return uuid	Unique id of the Virtual Machine
 	 */
@@ -91,92 +71,6 @@ public class VirtualMachine {
 	 */
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
-	}
-	
-	
-	// Disks
-	// =====
-	
-	/**
-	 * Add a disk to the Virtual Machine
-	 * @param disk	Disk to add to the Virtual Machine
-	 */
-	public void addDisk(Disk disk) {
-		disks.put(disk.getUuid(), disk);
-	}
-	
-	/**
-	 * Finds a disk in the Virtual Machine by its UUID 
-	 * @param uuid	Unique id of the disk to find
-	 * @return		Disk of the virtual machine with the specified UUID
-	 */
-	public Disk getDisk(String uuid) {
-		return disks.get(uuid);
-	}
-
-	/**
-	 * Returns a map with the disks of the Virtual Machine
-	 * @return	Map (UUID, Disk instance) with the disks of the Virtual Machine 
-	 */
-	public HashMap<String, Disk> getDisks() {
-		return disks;
-	}
-	
-	
-	// Snapshots
-	// =========
-	
-	/**
-	 * Returns a list with the snapshots of the virtual machine
-	 * @return	list with the snapshots of the virtual machine
-	 */
-	public ArrayList<Snapshot> getSnapshots() {
-		return snapshots;
-	}
-	
-	/**
-	 * Retrieves the last snapshot of the virtual machine
-	 * @return	last snapshot of the virtual machine
-	 */
-	public Snapshot getLastSnapShot() {
-		return lastSnapShot;
-	}
-	
-	/**
-	 * Sets the last snapshot of the virtual machine
-	 * @param lastSnapShot	last snapshot of the virtual machine
-	 */
-	public void setLastSnapShot(Snapshot lastSnapShot) {
-		this.lastSnapShot = lastSnapShot;
-	}
-
-	
-	// Images
-	// ======
-	
-	/**
-	 * Returns a map with the images of the virtual machine
-	 * @return	Map (UUID, Image) with the data of the images of the virtual machine
-	 */
-	public HashMap<String, Image> getImages() {
-		return images;
-	}
-	
-	/**
-	 * Add an Image to the Virtual Machine
-	 * @param image	Image to add to the virtual machine
-	 */
-	public void addImage(Image image) {
-		this.images.put(image.getUuid(), image);
-	}
-	
-	/**
-	 * Finds an image of the virtual machine by its UUID
-	 * @param uuid	Unique id of the image to find
-	 * @return		Image of the virtual machine with the specified UUID 
-	 */
-	public Image getImage(String uuid) {
-		return this.images.get(uuid);
 	}
 	
 	/**
@@ -242,8 +136,145 @@ public class VirtualMachine {
 	public void setLastStateChange(String lastStateChange) {
 		this.lastStateChange = lastStateChange;
 	}
+	
+	// Disks
+	// =====
+	
+	/**
+	 * Add a disk to the Virtual Machine
+	 * @param disk	Disk to add to the Virtual Machine
+	 */
+	public void addDisk(Disk disk) {
+		disks.put(disk.getUuid(), disk);
+	}
+	
+	/**
+	 * Finds a disk in the Virtual Machine by its UUID 
+	 * @param uuid	Unique id of the disk to find
+	 * @return		Disk of the virtual machine with the specified UUID
+	 */
+	public Disk getDisk(String uuid) {
+		return disks.get(uuid);
+	}
 
+	/**
+	 * Returns a map with the disks of the Virtual Machine
+	 * @return	Map (UUID, Disk instance) with the disks of the Virtual Machine 
+	 */
+	public HashMap<String, Disk> getDisks() {
+		return disks;
+	}
+	
+	
+	// Snapshots
+	// =========
+	
+	
+	/**
+	 * Allows to add a snapshot to the virtual machine
+	 * @param snap	Snapshot to add to the virtual machine
+	 */
+	public void addSnapshot(Snapshot snap){
+		snapshots.add(snap);		
+	}
 
+	/**
+	 * Allows to delete a snapshot.
+	 * @param snap	Snapshot to delete in the virtual machine
+	 */
+	public void deleteSnapshot(Snapshot snap){
+		for (int i = 0; i<snapshots.size();i++)
+		{
+			if(snapshots.get(i)!=null){
+				if(snapshots.get(i) == snap){
+					snapshots.remove(i);
+				}
+			}
+		}
+	}	
+	
+	/**
+	 * Returns a list with the snapshots of the virtual machine
+	 * @return	list with the snapshots of the virtual machine
+	 */
+	public ArrayList<Snapshot> getSnapshots() {
+		return snapshots;
+	}
+	
+	/**
+	 * Retrieves the last snapshot of the virtual machine
+	 * @return	last snapshot of the virtual machine
+	 */
+	public Snapshot getLastSnapShot() {
+		return lastSnapShot;
+	}
+	
+	/**
+	 * Sets the last snapshot of the virtual machine
+	 * @param lastSnapShot	last snapshot of the virtual machine
+	 */
+	public void setLastSnapShot(Snapshot lastSnapShot) {
+		this.lastSnapShot = lastSnapShot;
+	}
+
+	
+	// Images
+	// ======
+	
+	/**
+	 * Returns a map with the images of the virtual machine
+	 * @return	Map (UUID, Image) with the data of the images of the virtual machine
+	 */
+	public HashMap<String, Image> getImages() {
+		return images;
+	}
+	
+	/**
+	 * Add an Image to the Virtual Machine
+	 * @param image	Image to add to the virtual machine
+	 */
+	public void addImage(Image image) {
+		this.images.put(image.getUuid(), image);
+	}
+	
+	/**
+	 * Finds an image of the virtual machine by its UUID
+	 * @param uuid	Unique id of the image to find
+	 * @return		Image of the virtual machine with the specified UUID 
+	 */
+	public Image getImage(String uuid) {
+		return this.images.get(uuid);
+	}
+
+	// DVDs
+	// ====
+	
+	/**
+	 * Returns a map with the DVDs of the virtual machine
+	 * @return	Map (UUID, Image) with the data of the DVDs of the virtual machine
+	 */
+	public HashMap<String, Image> getDVDs() {
+		return dvds;
+	}
+	
+	/**
+	 * Add a DVD to the Virtual Machine
+	 * @param image	DVD to add to the virtual machine
+	 */
+	public void addDVD(Image image) {
+		this.dvds.put(image.getUuid(), image);
+	}
+	
+	/**
+	 * Finds a DVD of the virtual machine by its UUID
+	 * @param uuid	Unique id of the DVD to find
+	 * @return		DVD of the virtual machine with the specified UUID 
+	 */
+	public Image getDVD(String uuid) {
+		return this.dvds.get(uuid);
+	}
+	
+	
 	// Pretty print
 	// ============
 	
@@ -257,6 +288,7 @@ public class VirtualMachine {
 				+ ",\n\t name: \"" + name + "\""
 				+ ",\n\t os: \"" + OS + "\""
 				+ ",\n\t disks: " + disks.values()
+				+ ",\n\t dvds: " + dvds.values()
 				+ ",\n\t snapshots: " + snapshots
 				+ "\n}";
 	}

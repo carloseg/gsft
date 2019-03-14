@@ -59,8 +59,8 @@ public class ListAllWriter {
 				pw.println(
 						snapshot.getTimeStamp()
 						+ ", " + snapshot.getName()
-						+ ", " + image.getLocation()
-						+ ", " + snapshot.getStateFile()
+						+ ", " + (image != null ? image.getLocation() : "(not found)") 
+						+ ", " + (snapshot != null ? snapshot.getStateFile() : "(not found)")
 						);					
 			}
 		}

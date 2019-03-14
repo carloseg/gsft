@@ -48,6 +48,8 @@ public class GSFTHandler extends DefaultHandler {
 	 */
 	private Snapshot		lastState		= null;
 	
+	private boolean 		inMediaRegistry = false;
+	private boolean			inADVD			= false;
 	
 	// Constructors
 	// ============
@@ -154,15 +156,47 @@ public class GSFTHandler extends DefaultHandler {
 			vm.addSnapshot(snapshot);
 		}
 		
+		else if (qName.equalsIgnoreCase("MediaRegistry")) {
+			inMediaRegistry = true;
+		}
+		
+		else if (qName.equalsIgnoreCase("AttachedDevice")) {
+			if (attributes.getValue("type").equals("DVD")) {
+				inADVD = true;
+			}
+		}
+		
 		else if (qName.equalsIgnoreCase("Image")) {
 
-			String diskUUID = attributes.getValue("uuid");
-			Image image = vm.getImage(diskUUID);
+			// during the processing of the XML, 
 			
-			if (currentSnapshot != null) {
-				currentSnapshot.addImage(image);
-			} else {
-				lastState.addImage(image);				
+			// if the parser is in media registry tag, 
+			// the image is a DVD and there is not a current snapshot
+			if (inMediaRegistry) {
+				
+				Image dvd = new Image(
+						attributes.getValue("uuid"),
+						attributes.getValue("location"),
+						"DVD",
+						false
+						);
+				vm.addDVD(dvd);
+			}
+			
+			if (!inMediaRegistry) {
+			
+				// link detected image to the current snapshot
+				String diskUUID = attributes.getValue("uuid");
+				Image image = vm.getImage(diskUUID);
+				
+				// is the image of a disk ? (not a DVD) 
+				if (image != null) {				
+					if (currentSnapshot != null) {
+						currentSnapshot.addImage(image);
+					} else {
+						lastState.addImage(image);				
+					}
+				}
 			}
 		}
 	}
@@ -186,7 +220,17 @@ public class GSFTHandler extends DefaultHandler {
 			}
 			currentSnapshot = null;
 			
-		} else if (qName.equalsIgnoreCase("HardDisk")) {
+		} 
+		
+		else if (qName.equalsIgnoreCase("MediaRegistry")) {
+			inMediaRegistry = false;
+		}		
+		
+		else if (qName.equalsIgnoreCase("AttachedDevice")) {
+			inADVD = false;
+		}		
+		
+		else if (qName.equalsIgnoreCase("HardDisk")) {
 			imageStack.pop();
 		}
 	}
